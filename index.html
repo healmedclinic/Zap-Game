@@ -10,26 +10,22 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
             background: linear-gradient(135deg, hsl(207, 90%, 54%) 0%, hsl(271, 81%, 56%) 50%, hsl(271, 81%, 60%) 100%);
             min-height: 100vh;
             color: white;
         }
-
         .container {
             padding: 1rem;
             max-width: 1200px;
             margin: 0 auto;
         }
-
         /* Header Styles */
         .header {
             text-align: center;
             margin-bottom: 2rem;
         }
-
         .header h1 {
             font-size: 3rem;
             font-weight: bold;
@@ -39,24 +35,20 @@
             justify-content: center;
             gap: 1rem;
         }
-
         .header p {
             font-size: 1.25rem;
             color: rgba(255, 255, 255, 0.8);
         }
-
         .zap-icon {
             color: #fcd34d;
             font-size: 3rem;
         }
-
         /* Tab Navigation */
         .tab-nav {
             display: flex;
             justify-content: center;
             margin-bottom: 2rem;
         }
-
         .tab-container {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(4px);
@@ -64,7 +56,6 @@
             padding: 0.25rem;
             display: flex;
         }
-
         .tab-button {
             background: transparent;
             border: none;
@@ -79,26 +70,21 @@
             font-size: 1rem;
             white-space: nowrap;
         }
-
         .tab-button.active {
             background: rgba(255, 255, 255, 0.2);
             color: white;
         }
-
         .tab-button:hover {
             color: white;
             background: rgba(255, 255, 255, 0.1);
         }
-
         /* Tab Content - FIXED */
         .tab-content {
             display: none;
         }
-
         .tab-content.active {
             display: block;
         }
-
         /* Card Styles */
         .card {
             background: rgba(255, 255, 255, 0.1);
@@ -108,11 +94,9 @@
             padding: 2rem;
             margin-bottom: 1.5rem;
         }
-
         .card-small {
             padding: 1rem;
         }
-
         /* Game Controls */
         .game-controls {
             display: flex;
@@ -122,7 +106,6 @@
             align-items: center;
             margin-bottom: 1.5rem;
         }
-
         .btn {
             padding: 0.75rem 2rem;
             border: none;
@@ -135,41 +118,33 @@
             align-items: center;
             gap: 0.5rem;
         }
-
         .btn-primary {
             background: #10b981;
             color: white;
         }
-
         .btn-primary:hover {
             background: #059669;
         }
-
         .btn-warning {
             background: #f59e0b;
             color: white;
         }
-
         .btn-warning:hover {
             background: #d97706;
         }
-
         .btn-danger {
             background: #ef4444;
             color: white;
         }
-
         .btn-danger:hover {
             background: #dc2626;
         }
-
         /* Difficulty Selector */
         .difficulty-selector {
             display: flex;
             justify-content: center;
             margin-top: 1.5rem;
         }
-
         .difficulty-container {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(4px);
@@ -177,7 +152,6 @@
             padding: 0.25rem;
             display: inline-flex;
         }
-
         .difficulty-btn {
             background: transparent;
             border: none;
@@ -188,46 +162,38 @@
             transition: all 0.3s;
             text-transform: capitalize;
         }
-
         .difficulty-btn.active {
             background: rgba(255, 255, 255, 0.3);
             color: white;
         }
-
         .difficulty-btn:hover {
             color: white;
             background: rgba(255, 255, 255, 0.1);
         }
-
         .difficulty-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
-
         /* Score Display */
         .score-display {
             display: flex;
             justify-content: space-between;
             text-align: center;
         }
-
         .score-item h3 {
             font-size: 0.875rem;
             color: rgba(255, 255, 255, 0.7);
             margin-bottom: 0.5rem;
         }
-
         .score-item p {
             font-size: 2rem;
             font-weight: bold;
         }
-
         /* Game Grid */
         .game-arena {
             position: relative;
             overflow: hidden;
         }
-
         .game-grid {
             width: 100%;
             max-width: 64rem;
@@ -239,7 +205,6 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 0;
         }
-
         .grid-cell {
             background: rgba(255, 255, 255, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -252,11 +217,9 @@
             transition: all 0.3s;
             position: relative;
         }
-
         .grid-cell:hover {
             background: rgba(255, 255, 255, 0.3);
         }
-
         .craving-item {
             width: 3.5rem;
             height: 3.5rem;
@@ -269,31 +232,24 @@
             animation: bounceIn 0.5s ease-out;
             transition: transform 0.2s;
         }
-
         .craving-item:hover {
             transform: scale(1.1);
         }
-
         .craving-cigarette {
             background: #ef4444;
         }
-
         .craving-wine {
             background: #8b5cf6;
         }
-
         .craving-beer {
             background: #eab308;
         }
-
         .craving-drinks {
             background: #d97706;
         }
-
         .craving-pills {
             background: #3b82f6;
         }
-
         /* Game Message */
         .game-message {
             text-align: center;
@@ -302,33 +258,27 @@
             font-weight: 500;
             padding: 0 1rem;
         }
-
         /* Animations */
         @keyframes bounceIn {
             0% { transform: scale(0); opacity: 0; }
             50% { transform: scale(1.1); opacity: 0.8; }
             100% { transform: scale(1); opacity: 1; }
         }
-
         @keyframes fadeOut {
             0% { transform: scale(1); opacity: 1; }
             100% { transform: scale(0.5); opacity: 0; }
         }
-
         @keyframes pulseRing {
             0% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.1); opacity: 0.7; }
             100% { transform: scale(1); opacity: 1; }
         }
-
         .animate-fadeout {
             animation: fadeOut 0.3s ease-in forwards;
         }
-
         .animate-pulse {
             animation: pulseRing 2s infinite;
         }
-
         .education-tabs {
             display: flex;
             justify-content: center;
@@ -336,7 +286,6 @@
             flex-wrap: wrap;
             gap: 0.25rem;
         }
-
         .education-tab {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(4px);
@@ -347,7 +296,6 @@
             width: 100%;
             max-width: 100%;
         }
-
         .education-tab-btn {
             background: transparent;
             border: none;
@@ -360,33 +308,27 @@
             flex-shrink: 0;
             font-size: 0.875rem;
         }
-
         .education-tab-btn.active {
             background: rgba(255, 255, 255, 0.2);
             color: white;
         }
-
         .education-section {
             display: none;
         }
-
         .education-section.active {
             display: block;
         }
-
         .education-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 2rem;
         }
-
         .brain-visualization {
             position: relative;
             width: 16rem;
             height: 16rem;
             margin: 0 auto 2rem;
         }
-
         .brain-shape {
             position: absolute;
             inset: 0;
@@ -394,7 +336,6 @@
             border-radius: 50%;
             opacity: 0.3;
         }
-
         .brain-target {
             position: absolute;
             width: 2rem;
@@ -403,25 +344,21 @@
             cursor: pointer;
             animation: pulseRing 2s infinite;
         }
-
         .brain-target-1 {
             top: 1rem;
             left: 2rem;
             background: #ef4444;
         }
-
         .brain-target-2 {
             top: 3rem;
             right: 3rem;
             background: #f97316;
         }
-
         .brain-target-3 {
             bottom: 4rem;
             left: 3rem;
             background: #eab308;
         }
-
         .brain-coil {
             position: absolute;
             top: -1rem;
@@ -436,33 +373,27 @@
             justify-content: center;
             font-size: 1rem;
         }
-
         .progress-grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 2rem;
         }
-
         .stat-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
-
         .stat-label {
             color: rgba(255, 255, 255, 0.9);
         }
-
         .stat-value {
             font-weight: bold;
         }
-
         .stat-emerald { color: #10b981; }
         .stat-blue { color: #3b82f6; }
         .stat-purple { color: #8b5cf6; }
         .stat-orange { color: #f97316; }
-
         .progress-bar {
             width: 100%;
             background: rgba(255, 255, 255, 0.2);
@@ -471,24 +402,20 @@
             margin-top: 0.5rem;
             overflow: hidden;
         }
-
         .progress-fill {
             height: 100%;
             border-radius: 9999px;
             transition: width 0.5s ease;
         }
-
         .progress-emerald { background: #10b981; }
         .progress-blue { background: #3b82f6; }
         .progress-purple { background: #8b5cf6; }
-
         .achievements-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1rem;
             margin-top: 2rem;
         }
-
         .achievement {
             text-align: center;
             padding: 1rem;
@@ -496,21 +423,17 @@
             border-radius: 0.75rem;
             transition: opacity 0.3s;
         }
-
         .achievement.locked {
             opacity: 0.5;
         }
-
         .achievement-icon {
             font-size: 2rem;
             margin-bottom: 0.5rem;
         }
-
         .achievement-title {
             color: rgba(255, 255, 255, 0.9);
             font-size: 0.875rem;
         }
-
         .achievement-dot {
             width: 0.5rem;
             height: 0.5rem;
@@ -518,63 +441,50 @@
             border-radius: 50%;
             margin: 0.5rem auto 0;
         }
-
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .container {
                 padding: 0.5rem;
             }
-
             .header h1 {
                 font-size: 2rem;
             }
-
             .header p {
                 font-size: 1rem;
             }
-
             .tab-button {
                 padding: 0.5rem 1rem;
                 font-size: 0.875rem;
             }
-
             .card {
                 padding: 1rem;
             }
-
             .game-controls {
                 flex-direction: column;
                 gap: 0.5rem;
             }
-
             .btn {
                 width: 100%;
                 justify-content: center;
             }
-
             .grid-cell {
                 min-height: 4rem;
             }
-
             .craving-item {
                 width: 2.5rem;
                 height: 2.5rem;
                 font-size: 1.5rem;
             }
-
             .education-grid {
                 grid-template-columns: 1fr;
             }
-
             .progress-grid {
                 grid-template-columns: 1fr;
             }
-
             .achievements-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-
         /* Hidden class */
         .hidden {
             display: none !important;
@@ -591,7 +501,6 @@
             </h1>
             <p>TMS Therapy Training Game</p>
         </header>
-
         <!-- Tab Navigation -->
         <div class="tab-nav">
             <div class="tab-container">
@@ -606,7 +515,6 @@
                 </button>
             </div>
         </div>
-
         <!-- Game Content -->
         <div id="game-content" class="tab-content active">
             <!-- Game Controls -->
@@ -622,7 +530,6 @@
                         🔄 Reset
                     </button>
                 </div>
-
                 <div class="difficulty-selector">
                     <div class="difficulty-container">
                         <button class="difficulty-btn active" data-difficulty="easy">Easy</button>
@@ -632,7 +539,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Score Display -->
             <div class="card card-small">
                 <div class="score-display">
@@ -650,7 +556,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Game Arena -->
             <div class="card game-arena">
                 <div class="game-grid" id="game-grid">
@@ -661,7 +566,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Education Content -->
         <div id="education-content" class="tab-content">
             <div class="education-tabs">
@@ -672,7 +576,6 @@
                     <button class="education-tab-btn" data-education-tab="success-stories">Success Stories</button>
                 </div>
             </div>
-
             <!-- What is TMS Section -->
             <div id="what-is-tms" class="education-section active">
                 <div class="education-grid">
@@ -719,7 +622,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- How it Works Section -->
             <div id="how-it-works" class="education-section">
                 <div class="card">
@@ -744,7 +646,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Treatment Process Section -->
             <div id="treatment-process" class="education-section">
                 <div class="card">
@@ -804,7 +705,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Success Stories Section -->
             <div id="success-stories" class="education-section">
                 <div class="card">
@@ -866,7 +766,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Progress Content -->
         <div id="progress-content" class="tab-content">
             <div class="card">
@@ -958,7 +857,6 @@
             </div>
         </div>
     </div>
-
     <script>
         // Game State
         let gameState = {
@@ -972,7 +870,6 @@
             cravings: [],
             gameMessage: 'Select difficulty and click Start to begin!'
         };
-
         // Game Stats (localStorage)
         let gameStats = {
             highScore: parseInt(localStorage.getItem('tms-high-score')) || 0,
@@ -980,7 +877,6 @@
             totalCravingsZapped: parseInt(localStorage.getItem('tms-total-zapped')) || 0,
             totalCravingsSpawned: parseInt(localStorage.getItem('tms-total-spawned')) || 0
         };
-
         // Craving Types
         const cravingTypes = [
             { icon: '🚬', color: 'craving-cigarette', type: 'cigarette', name: 'Smoking' },
@@ -989,7 +885,6 @@
             { icon: '🥃', color: 'craving-drinks', type: 'drinks', name: 'Drinks' },
             { icon: '💊', color: 'craving-pills', type: 'pills', name: 'Pills' }
         ];
-
         // Difficulty Settings
         const difficultySettings = {
             easy: { interval: 2000, duration: 3000, targets: 16 },
@@ -997,7 +892,6 @@
             hard: { interval: 1000, duration: 2000, targets: 16 },
             expert: { interval: 800, duration: 1500, targets: 16 }
         };
-
         // Educational Messages
         const educationalMessages = {
             cigarette: "Great! TMS can help reduce nicotine cravings by targeting brain reward pathways.",
@@ -1006,11 +900,9 @@
             drinks: "Perfect! TMS therapy can assist with breaking alcohol dependency patterns.",
             pills: "Great work! TMS therapy can assist with various substance addictions."
         };
-
         // Game Timers
         let gameTimer;
         let spawnTimer;
-
         // DOM Elements
         const startBtn = document.getElementById('start-btn');
         const pauseBtn = document.getElementById('pause-btn');
@@ -1020,7 +912,6 @@
         const zappedEl = document.getElementById('zapped');
         const messageEl = document.getElementById('game-message');
         const gameGrid = document.getElementById('game-grid');
-
         // Initialize game grid
         function initializeGrid() {
             gameGrid.innerHTML = '';
@@ -1031,7 +922,6 @@
                 gameGrid.appendChild(cell);
             }
         }
-
         // Update display
         function updateDisplay() {
             scoreEl.textContent = gameState.score;
@@ -1050,7 +940,6 @@
             
             updateAchievements();
         }
-
         // Update achievements
         function updateAchievements() {
             const firstZap = document.getElementById('achievement-first-zap');
@@ -1072,7 +961,6 @@
                 expert.querySelector('.achievement-dot').classList.remove('hidden');
             }
         }
-
         // Start game
         function startGame() {
             if (gameState.isPlaying) return;
@@ -1110,7 +998,6 @@
             
             updateDisplay();
         }
-
         // Spawn craving
         function spawnCraving() {
             if (!gameState.isPlaying || gameState.isPaused) return;
@@ -1122,4 +1009,224 @@
                 }
             }
             
-            if (avail
+            if (availableTargets.length === 0) return;
+            
+            const randomTarget = availableTargets[Math.floor(Math.random() * availableTargets.length)];
+            const randomCraving = cravingTypes[Math.floor(Math.random() * cravingTypes.length)];
+            
+            const craving = {
+                id: Date.now() + '-' + Math.random(),
+                type: randomCraving.type,
+                targetId: randomTarget,
+                spawnTime: Date.now()
+            };
+            
+            gameState.cravings.push(craving);
+            gameState.totalCravings++;
+            
+            // Render craving
+            const cell = document.querySelector(`[data-target-id="${randomTarget}"]`);
+            const cravingEl = document.createElement('div');
+            cravingEl.className = `craving-item ${randomCraving.color}`;
+            cravingEl.textContent = randomCraving.icon;
+            cravingEl.dataset.cravingId = craving.id;
+            cravingEl.addEventListener('click', () => zapCraving(craving.id));
+            cell.appendChild(cravingEl);
+            
+            // Auto-remove craving after duration
+            setTimeout(() => {
+                removeCraving(craving.id);
+            }, difficultySettings[gameState.difficulty].duration);
+        }
+        // Zap craving
+        function zapCraving(cravingId) {
+            const craving = gameState.cravings.find(c => c.id === cravingId);
+            if (!craving || !gameState.isPlaying || gameState.isPaused) return;
+            
+            gameState.score += 10;
+            gameState.cravingsZapped++;
+            
+            // Show educational message
+            const message = educationalMessages[craving.type] || "Great zap! TMS therapy helps retrain your brain.";
+            gameState.gameMessage = message;
+            
+            // Remove craving from state and DOM
+            removeCraving(cravingId);
+            
+            updateDisplay();
+        }
+        // Remove craving
+        function removeCraving(cravingId) {
+            gameState.cravings = gameState.cravings.filter(c => c.id !== cravingId);
+            
+            const cravingEl = document.querySelector(`[data-craving-id="${cravingId}"]`);
+            if (cravingEl) {
+                cravingEl.classList.add('animate-fadeout');
+                setTimeout(() => {
+                    if (cravingEl.parentNode) {
+                        cravingEl.parentNode.removeChild(cravingEl);
+                    }
+                }, 300);
+            }
+        }
+        // End game
+        function endGame() {
+            clearInterval(gameTimer);
+            clearInterval(spawnTimer);
+            
+            gameState.isPlaying = false;
+            gameState.timeLeft = 0;
+            
+            // Clear all cravings
+            gameState.cravings.forEach(craving => {
+                removeCraving(craving.id);
+            });
+            gameState.cravings = [];
+            
+            // Update stats
+            const accuracy = gameState.totalCravings > 0 ? 
+                Math.round((gameState.cravingsZapped / gameState.totalCravings) * 100) : 0;
+            
+            gameStats.highScore = Math.max(gameState.score, gameStats.highScore);
+            gameStats.gamesPlayed++;
+            gameStats.totalCravingsZapped += gameState.cravingsZapped;
+            gameStats.totalCravingsSpawned += gameState.totalCravings;
+            
+            // Save to localStorage
+            localStorage.setItem('tms-high-score', gameStats.highScore);
+            localStorage.setItem('tms-games-played', gameStats.gamesPlayed);
+            localStorage.setItem('tms-total-zapped', gameStats.totalCravingsZapped);
+            localStorage.setItem('tms-total-spawned', gameStats.totalCravingsSpawned);
+            
+            gameState.gameMessage = `Game Over! Score: ${gameState.score} | Accuracy: ${accuracy}% | Learn more about TMS in the Education tab!`;
+            
+            startBtn.classList.remove('hidden');
+            pauseBtn.classList.add('hidden');
+            
+            // Enable difficulty buttons
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.disabled = false;
+            });
+            
+            updateDisplay();
+        }
+        // Pause game
+        function pauseGame() {
+            gameState.isPaused = !gameState.isPaused;
+            pauseBtn.textContent = gameState.isPaused ? '▶️ Resume' : '⏸️ Pause';
+        }
+        // Reset game
+        function resetGame() {
+            clearInterval(gameTimer);
+            clearInterval(spawnTimer);
+            
+            // Clear all cravings
+            gameState.cravings.forEach(craving => {
+                removeCraving(craving.id);
+            });
+            
+            gameState = {
+                score: 0,
+                timeLeft: 60,
+                isPlaying: false,
+                isPaused: false,
+                difficulty: gameState.difficulty,
+                cravingsZapped: 0,
+                totalCravings: 0,
+                cravings: [],
+                gameMessage: 'Select difficulty and click Start to begin!'
+            };
+            
+            startBtn.classList.remove('hidden');
+            pauseBtn.classList.add('hidden');
+            pauseBtn.textContent = '⏸️ Pause';
+            
+            // Enable difficulty buttons
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.disabled = false;
+            });
+            
+            updateDisplay();
+        }
+        // Set difficulty
+        function setDifficulty(difficulty) {
+            if (gameState.isPlaying) return;
+            
+            gameState.difficulty = difficulty;
+            
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-difficulty="${difficulty}"]`).classList.add('active');
+        }
+        // Tab navigation - FIXED
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(`${tabId}-content`).classList.add('active');
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        }
+        // Education tab navigation
+        function switchEducationTab(tabId) {
+            // Hide all education sections
+            document.querySelectorAll('.education-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(tabId).classList.add('active');
+            
+            // Update education tab buttons
+            document.querySelectorAll('.education-tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-education-tab="${tabId}"]`).classList.add('active');
+        }
+        // Event Listeners
+        startBtn.addEventListener('click', startGame);
+        pauseBtn.addEventListener('click', pauseGame);
+        resetBtn.addEventListener('click', resetGame);
+        // Tab navigation events
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchTab(btn.dataset.tab);
+            });
+        });
+        // Education tab navigation events
+        document.querySelectorAll('.education-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchEducationTab(btn.dataset.educationTab);
+            });
+        });
+        // Difficulty selection events
+        document.querySelectorAll('.difficulty-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                setDifficulty(btn.dataset.difficulty);
+            });
+        });
+        // Brain target click events
+        document.querySelectorAll('.brain-target').forEach((target, index) => {
+            target.addEventListener('click', () => {
+                const messages = [
+                    'DEPRESSION Treatment: This region is targeted for treating depression with TMS therapy. Studies show 70% response rate.',
+                    'ANXIETY Treatment: TMS targets this area to help reduce anxiety symptoms and improve emotional regulation.',
+                    'ADDICTION Treatment: This brain region is associated with reward and craving patterns that TMS can help modify.'
+                ];
+                alert(messages[index]);
+            });
+        });
+        // Initialize
+        initializeGrid();
+        updateDisplay();
+    </script>
+</body>
+</html>
