@@ -90,6 +90,15 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
+        /* Tab Content - FIXED */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         /* Card Styles */
         .card {
             background: rgba(255, 255, 255, 0.1);
@@ -320,15 +329,6 @@
             animation: pulseRing 2s infinite;
         }
 
-        /* Education Content */
-        .education-content {
-            display: none;
-        }
-
-        .education-content.active {
-            display: block;
-        }
-
         .education-tabs {
             display: flex;
             justify-content: center;
@@ -435,15 +435,6 @@
             align-items: center;
             justify-content: center;
             font-size: 1rem;
-        }
-
-        /* Progress Dashboard */
-        .progress-content {
-            display: none;
-        }
-
-        .progress-content.active {
-            display: block;
         }
 
         .progress-grid {
@@ -672,7 +663,7 @@
         </div>
 
         <!-- Education Content -->
-        <div id="education-content" class="tab-content education-content">
+        <div id="education-content" class="tab-content">
             <div class="education-tabs">
                 <div class="education-tab">
                     <button class="education-tab-btn active" data-education-tab="what-is-tms">What is TMS?</button>
@@ -877,7 +868,7 @@
         </div>
 
         <!-- Progress Content -->
-        <div id="progress-content" class="tab-content progress-content">
+        <div id="progress-content" class="tab-content">
             <div class="card">
                 <h2 style="font-size: 2rem; margin-bottom: 2rem; text-align: center;">Your Progress</h2>
                 
@@ -1131,238 +1122,4 @@
                 }
             }
             
-            if (availableTargets.length === 0) return;
-            
-            const randomTarget = availableTargets[Math.floor(Math.random() * availableTargets.length)];
-            const randomCraving = cravingTypes[Math.floor(Math.random() * cravingTypes.length)];
-            
-            const craving = {
-                id: Date.now() + '-' + Math.random(),
-                type: randomCraving.type,
-                targetId: randomTarget,
-                spawnTime: Date.now()
-            };
-            
-            gameState.cravings.push(craving);
-            gameState.totalCravings++;
-            
-            // Render craving
-            const cell = document.querySelector(`[data-target-id="${randomTarget}"]`);
-            const cravingEl = document.createElement('div');
-            cravingEl.className = `craving-item ${randomCraving.color}`;
-            cravingEl.textContent = randomCraving.icon;
-            cravingEl.dataset.cravingId = craving.id;
-            cravingEl.addEventListener('click', () => zapCraving(craving.id));
-            cell.appendChild(cravingEl);
-            
-            // Auto-remove craving after duration
-            setTimeout(() => {
-                removeCraving(craving.id);
-            }, difficultySettings[gameState.difficulty].duration);
-        }
-
-        // Zap craving
-        function zapCraving(cravingId) {
-            const craving = gameState.cravings.find(c => c.id === cravingId);
-            if (!craving || !gameState.isPlaying || gameState.isPaused) return;
-            
-            gameState.score += 10;
-            gameState.cravingsZapped++;
-            
-            // Show educational message
-            const message = educationalMessages[craving.type] || "Great zap! TMS therapy helps retrain your brain.";
-            gameState.gameMessage = message;
-            
-            // Remove craving from state and DOM
-            removeCraving(cravingId);
-            
-            updateDisplay();
-        }
-
-        // Remove craving
-        function removeCraving(cravingId) {
-            gameState.cravings = gameState.cravings.filter(c => c.id !== cravingId);
-            
-            const cravingEl = document.querySelector(`[data-craving-id="${cravingId}"]`);
-            if (cravingEl) {
-                cravingEl.classList.add('animate-fadeout');
-                setTimeout(() => {
-                    if (cravingEl.parentNode) {
-                        cravingEl.parentNode.removeChild(cravingEl);
-                    }
-                }, 300);
-            }
-        }
-
-        // End game
-        function endGame() {
-            clearInterval(gameTimer);
-            clearInterval(spawnTimer);
-            
-            gameState.isPlaying = false;
-            gameState.timeLeft = 0;
-            
-            // Clear all cravings
-            gameState.cravings.forEach(craving => {
-                removeCraving(craving.id);
-            });
-            gameState.cravings = [];
-            
-            // Update stats
-            const accuracy = gameState.totalCravings > 0 ? 
-                Math.round((gameState.cravingsZapped / gameState.totalCravings) * 100) : 0;
-            
-            gameStats.highScore = Math.max(gameState.score, gameStats.highScore);
-            gameStats.gamesPlayed++;
-            gameStats.totalCravingsZapped += gameState.cravingsZapped;
-            gameStats.totalCravingsSpawned += gameState.totalCravings;
-            
-            // Save to localStorage
-            localStorage.setItem('tms-high-score', gameStats.highScore);
-            localStorage.setItem('tms-games-played', gameStats.gamesPlayed);
-            localStorage.setItem('tms-total-zapped', gameStats.totalCravingsZapped);
-            localStorage.setItem('tms-total-spawned', gameStats.totalCravingsSpawned);
-            
-            gameState.gameMessage = `Game Over! Score: ${gameState.score} | Accuracy: ${accuracy}% | Learn more about TMS in the Education tab!`;
-            
-            startBtn.classList.remove('hidden');
-            pauseBtn.classList.add('hidden');
-            
-            // Enable difficulty buttons
-            document.querySelectorAll('.difficulty-btn').forEach(btn => {
-                btn.disabled = false;
-            });
-            
-            updateDisplay();
-        }
-
-        // Pause game
-        function pauseGame() {
-            gameState.isPaused = !gameState.isPaused;
-            pauseBtn.textContent = gameState.isPaused ? '▶️ Resume' : '⏸️ Pause';
-        }
-
-        // Reset game
-        function resetGame() {
-            clearInterval(gameTimer);
-            clearInterval(spawnTimer);
-            
-            // Clear all cravings
-            gameState.cravings.forEach(craving => {
-                removeCraving(craving.id);
-            });
-            
-            gameState = {
-                score: 0,
-                timeLeft: 60,
-                isPlaying: false,
-                isPaused: false,
-                difficulty: gameState.difficulty,
-                cravingsZapped: 0,
-                totalCravings: 0,
-                cravings: [],
-                gameMessage: 'Select difficulty and click Start to begin!'
-            };
-            
-            startBtn.classList.remove('hidden');
-            pauseBtn.classList.add('hidden');
-            pauseBtn.textContent = '⏸️ Pause';
-            
-            // Enable difficulty buttons
-            document.querySelectorAll('.difficulty-btn').forEach(btn => {
-                btn.disabled = false;
-            });
-            
-            updateDisplay();
-        }
-
-        // Set difficulty
-        function setDifficulty(difficulty) {
-            if (gameState.isPlaying) return;
-            
-            gameState.difficulty = difficulty;
-            
-            document.querySelectorAll('.difficulty-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector(`[data-difficulty="${difficulty}"]`).classList.add('active');
-        }
-
-        // Tab navigation
-        function switchTab(tabId) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Show selected tab content
-            document.getElementById(`${tabId}-content`).classList.add('active');
-            
-            // Update tab buttons
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
-        }
-
-        // Education tab navigation
-        function switchEducationTab(tabId) {
-            // Hide all education sections
-            document.querySelectorAll('.education-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // Show selected section
-            document.getElementById(tabId).classList.add('active');
-            
-            // Update education tab buttons
-            document.querySelectorAll('.education-tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector(`[data-education-tab="${tabId}"]`).classList.add('active');
-        }
-
-        // Event Listeners
-        startBtn.addEventListener('click', startGame);
-        pauseBtn.addEventListener('click', pauseGame);
-        resetBtn.addEventListener('click', resetGame);
-
-        // Tab navigation events
-        document.querySelectorAll('.tab-button').forEach(btn => {
-            btn.addEventListener('click', () => {
-                switchTab(btn.dataset.tab);
-            });
-        });
-
-        // Education tab navigation events
-        document.querySelectorAll('.education-tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                switchEducationTab(btn.dataset.educationTab);
-            });
-        });
-
-        // Difficulty selection events
-        document.querySelectorAll('.difficulty-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                setDifficulty(btn.dataset.difficulty);
-            });
-        });
-
-        // Brain target click events
-        document.querySelectorAll('.brain-target').forEach((target, index) => {
-            target.addEventListener('click', () => {
-                const messages = [
-                    'DEPRESSION Treatment: This region is targeted for treating depression with TMS therapy. Studies show 70% response rate.',
-                    'ANXIETY Treatment: TMS targets this area to help reduce anxiety symptoms and improve emotional regulation.',
-                    'ADDICTION Treatment: This brain region is associated with reward and craving patterns that TMS can help modify.'
-                ];
-                alert(messages[index]);
-            });
-        });
-
-        // Initialize
-        initializeGrid();
-        updateDisplay();
-    </script>
-</body>
-</html>
+            if (avail
