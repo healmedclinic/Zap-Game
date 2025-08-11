@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zap the Cravings - TMS Therapy Training Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, hsl(207, 90%, 54%) 0%, hsl(271, 81%, 56%) 50%, hsl(271, 81%, 60%) 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .zap-icon {
+            color: #fcd34d;
+            font-size: 3rem;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .tab-container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+            border-radius: 1rem;
+            padding: 0.25rem;
+            display: flex;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+
+        .tab-button.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .tab-button:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Card Styles */
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-small {
+            padding: 1rem;
+        }
+
+        /* Game Controls */
+        .game-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 1.125rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #059669;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        /* Difficulty Selector */
+        .difficulty-selector {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .difficulty-container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+            border-radius: 0.75rem;
+            padding: 0.25rem;
+            display: inline-flex;
+        }
+
+        .difficulty-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: capitalize;
+        }
+
+        .difficulty-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .difficulty-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .difficulty-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Score Display */
+        .score-display {
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+        }
+
+        .score-item h3 {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.5rem;
+        }
+
+        .score-item p {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Game Grid */
+        .game-arena {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-grid {
+            width: 100%;
+            max-width: 64rem;
+            margin: 0 auto;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+        }
+
+        .grid-cell {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            aspect-ratio: 1;
+            min-height: 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .grid-cell:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .craving-item {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            animation: bounceIn 0.5s ease-out;
+            transition: transform 0.2s;
+        }
+
+        .craving-item:hover {
+            transform: scale(1.1);
+        }
+
+        .craving-cigarette {
+            background: #ef4444;
+        }
+
+        .craving-wine {
+            background: #8b5cf6;
+        }
+
+        .craving-beer {
+            background: #eab308;
+        }
+
+        .craving-drinks {
+            background: #d97706;
+        }
+
+        .craving-pills {
+            background: #3b82f6;
+        }
+
+        /* Game Message */
+        .game-message {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 1.125rem;
+            font-weight: 500;
+            padding: 0 1rem;
+        }
+
+        /* Animations */
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.5); opacity: 0; }
+        }
+
+        @keyframes pulseRing {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .animate-fadeout {
+            animation: fadeOut 0.3s ease-in forwards;
+        }
+
+        .animate-pulse {
+            animation: pulseRing 2s infinite;
+        }
+
+        /* Education Content */
+        .education-content {
+            display: none;
+        }
+
+        .education-content.active {
+            display: block;
+        }
+
+        .education-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+
+        .education-tab {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            border-radius: 1rem;
+            padding: 0.25rem;
+            display: flex;
+            overflow-x: auto;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .education-tab-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            flex-shrink: 0;
+            font-size: 0.875rem;
+        }
+
+        .education-tab-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .education-section {
+            display: none;
+        }
+
+        .education-section.active {
+            display: block;
+        }
+
+        .education-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .brain-visualization {
+            position: relative;
+            width: 16rem;
+            height: 16rem;
+            margin: 0 auto 2rem;
+        }
+
+        .brain-shape {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, #60a5fa, #a855f7);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .brain-target {
+            position: absolute;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            cursor: pointer;
+            animation: pulseRing 2s infinite;
+        }
+
+        .brain-target-1 {
+            top: 1rem;
+            left: 2rem;
+            background: #ef4444;
+        }
+
+        .brain-target-2 {
+            top: 3rem;
+            right: 3rem;
+            background: #f97316;
+        }
+
+        .brain-target-3 {
+            bottom: 4rem;
+            left: 3rem;
+            background: #eab308;
+        }
+
+        .brain-coil {
+            position: absolute;
+            top: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3rem;
+            height: 2rem;
+            background: #9ca3af;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        /* Progress Dashboard */
+        .progress-content {
+            display: none;
+        }
+
+        .progress-content.active {
+            display: block;
+        }
+
+        .progress-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .stat-value {
+            font-weight: bold;
+        }
+
+        .stat-emerald { color: #10b981; }
+        .stat-blue { color: #3b82f6; }
+        .stat-purple { color: #8b5cf6; }
+        .stat-orange { color: #f97316; }
+
+        .progress-bar {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 9999px;
+            height: 0.5rem;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-emerald { background: #10b981; }
+        .progress-blue { background: #3b82f6; }
+        .progress-purple { background: #8b5cf6; }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .achievement {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            transition: opacity 0.3s;
+        }
+
+        .achievement.locked {
+            opacity: 0.5;
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-title {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.875rem;
+        }
+
+        .achievement-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            background: #10b981;
+            border-radius: 50%;
+            margin: 0.5rem auto 0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0.5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .tab-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .card {
+                padding: 1rem;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .grid-cell {
+                min-height: 4rem;
+            }
+
+            .craving-item {
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 1.5rem;
+            }
+
+            .education-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .progress-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .achievements-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>
+                <span class="zap-icon">⚡</span>
+                Zap the Cravings
+            </h1>
+            <p>TMS Therapy Training Game</p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <div class="tab-container">
+                <button class="tab-button active" data-tab="game">
+                    🎮 Game
+                </button>
+                <button class="tab-button" data-tab="education">
+                    🎓 Learn TMS
+                </button>
+                <button class="tab-button" data-tab="progress">
+                    📈 Progress
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Content -->
+        <div id="game-content" class="tab-content active">
+            <!-- Game Controls -->
+            <div class="card">
+                <div class="game-controls">
+                    <button id="start-btn" class="btn btn-primary">
+                        ▶️ Start
+                    </button>
+                    <button id="pause-btn" class="btn btn-warning hidden">
+                        ⏸️ Pause
+                    </button>
+                    <button id="reset-btn" class="btn btn-danger">
+                        🔄 Reset
+                    </button>
+                </div>
+
+                <div class="difficulty-selector">
+                    <div class="difficulty-container">
+                        <button class="difficulty-btn active" data-difficulty="easy">Easy</button>
+                        <button class="difficulty-btn" data-difficulty="medium">Medium</button>
+                        <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+                        <button class="difficulty-btn" data-difficulty="expert">Expert</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Score Display -->
+            <div class="card card-small">
+                <div class="score-display">
+                    <div class="score-item">
+                        <h3>Score</h3>
+                        <p id="score">0</p>
+                    </div>
+                    <div class="score-item">
+                        <h3>Time Left</h3>
+                        <p id="timer">60s</p>
+                    </div>
+                    <div class="score-item">
+                        <h3>Zapped</h3>
+                        <p id="zapped">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Arena -->
+            <div class="card game-arena">
+                <div class="game-grid" id="game-grid">
+                    <!-- Grid cells will be generated by JavaScript -->
+                </div>
+                <div class="game-message">
+                    <p id="game-message">Select difficulty and click Start to begin!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Education Content -->
+        <div id="education-content" class="tab-content education-content">
+            <div class="education-tabs">
+                <div class="education-tab">
+                    <button class="education-tab-btn active" data-education-tab="what-is-tms">What is TMS?</button>
+                    <button class="education-tab-btn" data-education-tab="how-it-works">How TMS Works</button>
+                    <button class="education-tab-btn" data-education-tab="treatment-process">Treatment Process</button>
+                    <button class="education-tab-btn" data-education-tab="success-stories">Success Stories</button>
+                </div>
+            </div>
+
+            <!-- What is TMS Section -->
+            <div id="what-is-tms" class="education-section active">
+                <div class="education-grid">
+                    <div class="card">
+                        <h2 style="font-size: 2rem; margin-bottom: 1.5rem;">What is TMS Therapy?</h2>
+                        <p style="font-size: 1.125rem; line-height: 1.7; margin-bottom: 1.5rem;">
+                            Transcranial Magnetic Stimulation (TMS) is a non-invasive, FDA-approved treatment that uses magnetic fields to stimulate specific areas of the brain associated with depression, anxiety, and addiction.
+                        </p>
+                        <div class="card card-small">
+                            <h3 style="color: #10b981; margin-bottom: 1rem;">Key Benefits:</h3>
+                            <ul style="list-style: none; space-y: 0.5rem;">
+                                <li style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                    <span style="width: 0.5rem; height: 0.5rem; background: #10b981; border-radius: 50%; display: inline-block;"></span>
+                                    Non-invasive and medication-free
+                                </li>
+                                <li style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                    <span style="width: 0.5rem; height: 0.5rem; background: #10b981; border-radius: 50%; display: inline-block;"></span>
+                                    No systemic side effects
+                                </li>
+                                <li style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                    <span style="width: 0.5rem; height: 0.5rem; background: #10b981; border-radius: 50%; display: inline-block;"></span>
+                                    Outpatient treatment
+                                </li>
+                                <li style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <span style="width: 0.5rem; height: 0.5rem; background: #10b981; border-radius: 50%; display: inline-block;"></span>
+                                    Proven effectiveness
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; text-align: center;">Brain Target Areas</h3>
+                        <div class="brain-visualization">
+                            <div class="brain-shape"></div>
+                            <div class="brain-target brain-target-1" title="Depression Treatment Area"></div>
+                            <div class="brain-target brain-target-2" title="Anxiety Treatment Area"></div>
+                            <div class="brain-target brain-target-3" title="Addiction Treatment Area"></div>
+                            <div class="brain-coil">🧲</div>
+                        </div>
+                        <div class="card card-small">
+                            <p style="text-align: center; color: rgba(255, 255, 255, 0.9);">Click on a target area to learn more about TMS treatment</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How it Works Section -->
+            <div id="how-it-works" class="education-section">
+                <div class="card">
+                    <h2 style="font-size: 2rem; margin-bottom: 2rem; text-align: center;">How TMS Works</h2>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                        <div style="text-align: center;">
+                            <div style="width: 5rem; height: 5rem; background: #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 2rem;">🧲</div>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Magnetic Stimulation</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8);">Precise magnetic pulses target specific brain regions</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="width: 5rem; height: 5rem; background: #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 2rem;">🧠</div>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Neural Activation</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8);">Stimulates neurons and promotes brain plasticity</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="width: 5rem; height: 5rem; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 2rem;">❤️</div>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Healing Response</h3>
+                            <p style="color: rgba(255, 255, 255, 0.8);">Reduces symptoms and improves mental health</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Treatment Process Section -->
+            <div id="treatment-process" class="education-section">
+                <div class="card">
+                    <h2 style="font-size: 2rem; margin-bottom: 2rem; text-align: center;">Treatment Process</h2>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">What to Expect</h3>
+                            <div style="space-y: 1.5rem;">
+                                <div class="card card-small">
+                                    <h4 style="font-size: 1.25rem; color: #10b981; margin-bottom: 0.75rem;">Session Duration</h4>
+                                    <p style="color: rgba(255, 255, 255, 0.9);">Each session lasts 20-40 minutes. You'll remain awake and alert throughout the treatment.</p>
+                                </div>
+                                <div class="card card-small">
+                                    <h4 style="font-size: 1.25rem; color: #10b981; margin-bottom: 0.75rem;">Treatment Schedule</h4>
+                                    <p style="color: rgba(255, 255, 255, 0.9);">Typically 5 sessions per week for 4-6 weeks, with some protocols extending longer.</p>
+                                </div>
+                                <div class="card card-small">
+                                    <h4 style="font-size: 1.25rem; color: #10b981; margin-bottom: 0.75rem;">Side Effects</h4>
+                                    <p style="color: rgba(255, 255, 255, 0.9);">Mild headache or scalp discomfort that typically resolves quickly after treatment.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Success Rates</h3>
+                            <div style="space-y: 1rem;">
+                                <div class="card card-small">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                        <span style="color: rgba(255, 255, 255, 0.9);">Depression Response</span>
+                                        <span style="color: #10b981; font-weight: bold;">70%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill progress-emerald" style="width: 70%;"></div>
+                                    </div>
+                                </div>
+                                <div class="card card-small">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                        <span style="color: rgba(255, 255, 255, 0.9);">Anxiety Improvement</span>
+                                        <span style="color: #10b981; font-weight: bold;">65%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill progress-blue" style="width: 65%;"></div>
+                                    </div>
+                                </div>
+                                <div class="card card-small">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                        <span style="color: rgba(255, 255, 255, 0.9);">Addiction Recovery</span>
+                                        <span style="color: #10b981; font-weight: bold;">55%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill progress-purple" style="width: 55%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Stories Section -->
+            <div id="success-stories" class="education-section">
+                <div class="card">
+                    <h2 style="font-size: 2rem; margin-bottom: 2rem; text-align: center;">Success Stories</h2>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                        <div class="card card-small">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                                <div style="width: 3rem; height: 3rem; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">👤</div>
+                                <div>
+                                    <h4 style="color: white; font-weight: 600;">Sarah M.</h4>
+                                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;">Depression Treatment</p>
+                                </div>
+                            </div>
+                            <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.875rem; line-height: 1.5;">"After years of medication struggles, TMS gave me my life back. I feel like myself again and can enjoy time with my family."</p>
+                        </div>
+                        
+                        <div class="card card-small">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                                <div style="width: 3rem; height: 3rem; background: #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">👤</div>
+                                <div>
+                                    <h4 style="color: white; font-weight: 600;">Mike R.</h4>
+                                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;">Anxiety Treatment</p>
+                                </div>
+                            </div>
+                            <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.875rem; line-height: 1.5;">"The constant worry and panic attacks that controlled my life are now manageable. TMS therapy was a game-changer for my anxiety."</p>
+                        </div>
+                        
+                        <div class="card card-small">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                                <div style="width: 3rem; height: 3rem; background: #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">👤</div>
+                                <div>
+                                    <h4 style="color: white; font-weight: 600;">Jennifer L.</h4>
+                                    <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem;">Addiction Recovery</p>
+                                </div>
+                            </div>
+                            <p style="color: rgba(255, 255, 255, 0.9); font-size: 0.875rem; line-height: 1.5;">"TMS helped reduce my cravings significantly. Combined with therapy, it's been essential to my recovery journey."</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Research Stats -->
+                    <div class="card card-small">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; text-align: center;">Clinical Research</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; text-align: center;">
+                            <div>
+                                <div style="font-size: 2rem; font-weight: bold; color: #10b981; margin-bottom: 0.5rem;">10,000+</div>
+                                <p style="color: rgba(255, 255, 255, 0.8);">Patients Treated</p>
+                            </div>
+                            <div>
+                                <div style="font-size: 2rem; font-weight: bold; color: #3b82f6; margin-bottom: 0.5rem;">FDA</div>
+                                <p style="color: rgba(255, 255, 255, 0.8);">Approved Treatment</p>
+                            </div>
+                            <div>
+                                <div style="font-size: 2rem; font-weight: bold; color: #8b5cf6; margin-bottom: 0.5rem;">20+</div>
+                                <p style="color: rgba(255, 255, 255, 0.8);">Years of Research</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Content -->
+        <div id="progress-content" class="tab-content progress-content">
+            <div class="card">
+                <h2 style="font-size: 2rem; margin-bottom: 2rem; text-align: center;">Your Progress</h2>
+                
+                <div class="progress-grid">
+                    <div class="card card-small">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Game Statistics</h3>
+                        <div>
+                            <div class="stat-item">
+                                <span class="stat-label">High Score</span>
+                                <span class="stat-value stat-emerald" id="high-score">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Games Played</span>
+                                <span class="stat-value stat-blue" id="games-played">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Accuracy Rate</span>
+                                <span class="stat-value stat-purple" id="accuracy-rate">0%</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Total Cravings Zapped</span>
+                                <span class="stat-value stat-orange" id="total-zapped">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card card-small">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Learning Progress</h3>
+                        <div>
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="color: rgba(255, 255, 255, 0.9);">TMS Basics</span>
+                                    <span style="color: #10b981; font-weight: bold;">100%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill progress-emerald" style="width: 100%;"></div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="color: rgba(255, 255, 255, 0.9);">Treatment Process</span>
+                                    <span style="color: #10b981; font-weight: bold;">75%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill progress-blue" style="width: 75%;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <span style="color: rgba(255, 255, 255, 0.9);">Brain Science</span>
+                                    <span style="color: #10b981; font-weight: bold;">50%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill progress-purple" style="width: 50%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Achievements -->
+                <div class="card card-small" style="margin-top: 2rem;">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Achievements</h3>
+                    <div class="achievements-grid">
+                        <div class="achievement" id="achievement-first-zap">
+                            <div class="achievement-icon">🏆</div>
+                            <p class="achievement-title">First Zap</p>
+                            <div class="achievement-dot hidden"></div>
+                        </div>
+                        <div class="achievement locked" id="achievement-sharpshooter">
+                            <div class="achievement-icon">🎯</div>
+                            <p class="achievement-title">Sharpshooter</p>
+                            <div class="achievement-dot hidden"></div>
+                        </div>
+                        <div class="achievement locked" id="achievement-tms-expert">
+                            <div class="achievement-icon">🧠</div>
+                            <p class="achievement-title">TMS Expert</p>
+                            <div class="achievement-dot hidden"></div>
+                        </div>
+                        <div class="achievement" id="achievement-scholar">
+                            <div class="achievement-icon">🎓</div>
+                            <p class="achievement-title">Scholar</p>
+                            <div class="achievement-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            score: 0,
+            timeLeft: 60,
+            isPlaying: false,
+            isPaused: false,
+            difficulty: 'easy',
+            cravingsZapped: 0,
+            totalCravings: 0,
+            cravings: [],
+            gameMessage: 'Select difficulty and click Start to begin!'
+        };
+
+        // Game Stats (localStorage)
+        let gameStats = {
+            highScore: parseInt(localStorage.getItem('tms-high-score')) || 0,
+            gamesPlayed: parseInt(localStorage.getItem('tms-games-played')) || 0,
+            totalCravingsZapped: parseInt(localStorage.getItem('tms-total-zapped')) || 0,
+            totalCravingsSpawned: parseInt(localStorage.getItem('tms-total-spawned')) || 0
+        };
+
+        // Craving Types
+        const cravingTypes = [
+            { icon: '🚬', color: 'craving-cigarette', type: 'cigarette', name: 'Smoking' },
+            { icon: '🍷', color: 'craving-wine', type: 'wine', name: 'Wine' },
+            { icon: '🍺', color: 'craving-beer', type: 'beer', name: 'Beer' },
+            { icon: '🥃', color: 'craving-drinks', type: 'drinks', name: 'Drinks' },
+            { icon: '💊', color: 'craving-pills', type: 'pills', name: 'Pills' }
+        ];
+
+        // Difficulty Settings
+        const difficultySettings = {
+            easy: { interval: 2000, duration: 3000, targets: 16 },
+            medium: { interval: 1500, duration: 2500, targets: 16 },
+            hard: { interval: 1000, duration: 2000, targets: 16 },
+            expert: { interval: 800, duration: 1500, targets: 16 }
+        };
+
+        // Educational Messages
+        const educationalMessages = {
+            cigarette: "Great! TMS can help reduce nicotine cravings by targeting brain reward pathways.",
+            wine: "Excellent! TMS therapy shows promise in treating alcohol addiction.",
+            beer: "Well done! TMS can help break the cycle of alcohol dependency.",
+            drinks: "Perfect! TMS therapy can assist with breaking alcohol dependency patterns.",
+            pills: "Great work! TMS therapy can assist with various substance addictions."
+        };
+
+        // Game Timers
+        let gameTimer;
+        let spawnTimer;
+
+        // DOM Elements
+        const startBtn = document.getElementById('start-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const scoreEl = document.getElementById('score');
+        const timerEl = document.getElementById('timer');
+        const zappedEl = document.getElementById('zapped');
+        const messageEl = document.getElementById('game-message');
+        const gameGrid = document.getElementById('game-grid');
+
+        // Initialize game grid
+        function initializeGrid() {
+            gameGrid.innerHTML = '';
+            for (let i = 0; i < 16; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'grid-cell';
+                cell.dataset.targetId = i;
+                gameGrid.appendChild(cell);
+            }
+        }
+
+        // Update display
+        function updateDisplay() {
+            scoreEl.textContent = gameState.score;
+            timerEl.textContent = gameState.timeLeft + 's';
+            zappedEl.textContent = gameState.cravingsZapped;
+            messageEl.textContent = gameState.gameMessage;
+            
+            // Update progress stats
+            document.getElementById('high-score').textContent = gameStats.highScore;
+            document.getElementById('games-played').textContent = gameStats.gamesPlayed;
+            document.getElementById('total-zapped').textContent = gameStats.totalCravingsZapped;
+            
+            const accuracy = gameStats.totalCravingsSpawned > 0 ? 
+                Math.round((gameStats.totalCravingsZapped / gameStats.totalCravingsSpawned) * 100) : 0;
+            document.getElementById('accuracy-rate').textContent = accuracy + '%';
+            
+            updateAchievements();
+        }
+
+        // Update achievements
+        function updateAchievements() {
+            const firstZap = document.getElementById('achievement-first-zap');
+            const sharpshooter = document.getElementById('achievement-sharpshooter');
+            const expert = document.getElementById('achievement-tms-expert');
+            
+            if (gameStats.totalCravingsZapped >= 1) {
+                firstZap.classList.remove('locked');
+                firstZap.querySelector('.achievement-dot').classList.remove('hidden');
+            }
+            
+            if (gameStats.totalCravingsZapped >= 20) {
+                sharpshooter.classList.remove('locked');
+                sharpshooter.querySelector('.achievement-dot').classList.remove('hidden');
+            }
+            
+            if (gameStats.highScore >= 500) {
+                expert.classList.remove('locked');
+                expert.querySelector('.achievement-dot').classList.remove('hidden');
+            }
+        }
+
+        // Start game
+        function startGame() {
+            if (gameState.isPlaying) return;
+            
+            gameState.isPlaying = true;
+            gameState.isPaused = false;
+            gameState.score = 0;
+            gameState.timeLeft = 60;
+            gameState.cravingsZapped = 0;
+            gameState.totalCravings = 0;
+            gameState.cravings = [];
+            gameState.gameMessage = 'Zap the cravings to learn about TMS therapy!';
+            
+            startBtn.classList.add('hidden');
+            pauseBtn.classList.remove('hidden');
+            
+            // Disable difficulty buttons
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.disabled = true;
+            });
+            
+            // Start timers
+            gameTimer = setInterval(() => {
+                if (!gameState.isPlaying || gameState.isPaused) return;
+                
+                gameState.timeLeft--;
+                if (gameState.timeLeft <= 0) {
+                    endGame();
+                }
+                updateDisplay();
+            }, 1000);
+            
+            // Start spawning cravings
+            spawnTimer = setInterval(spawnCraving, difficultySettings[gameState.difficulty].interval);
+            
+            updateDisplay();
+        }
+
+        // Spawn craving
+        function spawnCraving() {
+            if (!gameState.isPlaying || gameState.isPaused) return;
+            
+            const availableTargets = [];
+            for (let i = 0; i < 16; i++) {
+                if (!gameState.cravings.some(c => c.targetId === i)) {
+                    availableTargets.push(i);
+                }
+            }
+            
+            if (availableTargets.length === 0) return;
+            
+            const randomTarget = availableTargets[Math.floor(Math.random() * availableTargets.length)];
+            const randomCraving = cravingTypes[Math.floor(Math.random() * cravingTypes.length)];
+            
+            const craving = {
+                id: Date.now() + '-' + Math.random(),
+                type: randomCraving.type,
+                targetId: randomTarget,
+                spawnTime: Date.now()
+            };
+            
+            gameState.cravings.push(craving);
+            gameState.totalCravings++;
+            
+            // Render craving
+            const cell = document.querySelector(`[data-target-id="${randomTarget}"]`);
+            const cravingEl = document.createElement('div');
+            cravingEl.className = `craving-item ${randomCraving.color}`;
+            cravingEl.textContent = randomCraving.icon;
+            cravingEl.dataset.cravingId = craving.id;
+            cravingEl.addEventListener('click', () => zapCraving(craving.id));
+            cell.appendChild(cravingEl);
+            
+            // Auto-remove craving after duration
+            setTimeout(() => {
+                removeCraving(craving.id);
+            }, difficultySettings[gameState.difficulty].duration);
+        }
+
+        // Zap craving
+        function zapCraving(cravingId) {
+            const craving = gameState.cravings.find(c => c.id === cravingId);
+            if (!craving || !gameState.isPlaying || gameState.isPaused) return;
+            
+            gameState.score += 10;
+            gameState.cravingsZapped++;
+            
+            // Show educational message
+            const message = educationalMessages[craving.type] || "Great zap! TMS therapy helps retrain your brain.";
+            gameState.gameMessage = message;
+            
+            // Remove craving from state and DOM
+            removeCraving(cravingId);
+            
+            updateDisplay();
+        }
+
+        // Remove craving
+        function removeCraving(cravingId) {
+            gameState.cravings = gameState.cravings.filter(c => c.id !== cravingId);
+            
+            const cravingEl = document.querySelector(`[data-craving-id="${cravingId}"]`);
+            if (cravingEl) {
+                cravingEl.classList.add('animate-fadeout');
+                setTimeout(() => {
+                    if (cravingEl.parentNode) {
+                        cravingEl.parentNode.removeChild(cravingEl);
+                    }
+                }, 300);
+            }
+        }
+
+        // End game
+        function endGame() {
+            clearInterval(gameTimer);
+            clearInterval(spawnTimer);
+            
+            gameState.isPlaying = false;
+            gameState.timeLeft = 0;
+            
+            // Clear all cravings
+            gameState.cravings.forEach(craving => {
+                removeCraving(craving.id);
+            });
+            gameState.cravings = [];
+            
+            // Update stats
+            const accuracy = gameState.totalCravings > 0 ? 
+                Math.round((gameState.cravingsZapped / gameState.totalCravings) * 100) : 0;
+            
+            gameStats.highScore = Math.max(gameState.score, gameStats.highScore);
+            gameStats.gamesPlayed++;
+            gameStats.totalCravingsZapped += gameState.cravingsZapped;
+            gameStats.totalCravingsSpawned += gameState.totalCravings;
+            
+            // Save to localStorage
+            localStorage.setItem('tms-high-score', gameStats.highScore);
+            localStorage.setItem('tms-games-played', gameStats.gamesPlayed);
+            localStorage.setItem('tms-total-zapped', gameStats.totalCravingsZapped);
+            localStorage.setItem('tms-total-spawned', gameStats.totalCravingsSpawned);
+            
+            gameState.gameMessage = `Game Over! Score: ${gameState.score} | Accuracy: ${accuracy}% | Learn more about TMS in the Education tab!`;
+            
+            startBtn.classList.remove('hidden');
+            pauseBtn.classList.add('hidden');
+            
+            // Enable difficulty buttons
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.disabled = false;
+            });
+            
+            updateDisplay();
+        }
+
+        // Pause game
+        function pauseGame() {
+            gameState.isPaused = !gameState.isPaused;
+            pauseBtn.textContent = gameState.isPaused ? '▶️ Resume' : '⏸️ Pause';
+        }
+
+        // Reset game
+        function resetGame() {
+            clearInterval(gameTimer);
+            clearInterval(spawnTimer);
+            
+            // Clear all cravings
+            gameState.cravings.forEach(craving => {
+                removeCraving(craving.id);
+            });
+            
+            gameState = {
+                score: 0,
+                timeLeft: 60,
+                isPlaying: false,
+                isPaused: false,
+                difficulty: gameState.difficulty,
+                cravingsZapped: 0,
+                totalCravings: 0,
+                cravings: [],
+                gameMessage: 'Select difficulty and click Start to begin!'
+            };
+            
+            startBtn.classList.remove('hidden');
+            pauseBtn.classList.add('hidden');
+            pauseBtn.textContent = '⏸️ Pause';
+            
+            // Enable difficulty buttons
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.disabled = false;
+            });
+            
+            updateDisplay();
+        }
+
+        // Set difficulty
+        function setDifficulty(difficulty) {
+            if (gameState.isPlaying) return;
+            
+            gameState.difficulty = difficulty;
+            
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-difficulty="${difficulty}"]`).classList.add('active');
+        }
+
+        // Tab navigation
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(`${tabId}-content`).classList.add('active');
+            
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        }
+
+        // Education tab navigation
+        function switchEducationTab(tabId) {
+            // Hide all education sections
+            document.querySelectorAll('.education-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(tabId).classList.add('active');
+            
+            // Update education tab buttons
+            document.querySelectorAll('.education-tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-education-tab="${tabId}"]`).classList.add('active');
+        }
+
+        // Event Listeners
+        startBtn.addEventListener('click', startGame);
+        pauseBtn.addEventListener('click', pauseGame);
+        resetBtn.addEventListener('click', resetGame);
+
+        // Tab navigation events
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchTab(btn.dataset.tab);
+            });
+        });
+
+        // Education tab navigation events
+        document.querySelectorAll('.education-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchEducationTab(btn.dataset.educationTab);
+            });
+        });
+
+        // Difficulty selection events
+        document.querySelectorAll('.difficulty-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                setDifficulty(btn.dataset.difficulty);
+            });
+        });
+
+        // Brain target click events
+        document.querySelectorAll('.brain-target').forEach((target, index) => {
+            target.addEventListener('click', () => {
+                const messages = [
+                    'DEPRESSION Treatment: This region is targeted for treating depression with TMS therapy. Studies show 70% response rate.',
+                    'ANXIETY Treatment: TMS targets this area to help reduce anxiety symptoms and improve emotional regulation.',
+                    'ADDICTION Treatment: This brain region is associated with reward and craving patterns that TMS can help modify.'
+                ];
+                alert(messages[index]);
+            });
+        });
+
+        // Initialize
+        initializeGrid();
+        updateDisplay();
+    </script>
+</body>
+</html>
